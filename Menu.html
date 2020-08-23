@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Food Menu</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:50548/api/Foods",
+                dataType: 'json', // type of response data
+                success: function (data) {   // success callback function
+
+                    for (d in data) {
+                        $('#tabcontent').append("<tr>");
+                        $('#tabcontent').append("<td>" + data[d].ID + "</td><td>" + data[d].Name + "</td><td>" + data[d].Type + "</td><td>" + data[d].Price + "</td>");
+                        $('#tabcontent').append("</tr>");
+
+                    }
+                },
+                error: function (textStatus, errorMessage) { // error callback
+                    $('p').append('Error status: ' + JSON.stringify(textStatus) + 'Error Message : ' + errorMessage);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark" id="nav">
+        <a class="navbar-brand" href="Home.html"><img src="img/logo.PNG" width="100" height="50" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="Home.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Profile.html">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Menu.html">Food Details</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="About.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="user_login.html">Login</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a class="btn btn-outline-success my-2 my-sm-0" type="submit" href="signup_form.html" style="color:white;">Register First</a>
+            </form>
+        </div>
+    </nav>
+    <h4 style="text-align:left;color:darkorange;">Food Menu:</h4>
+    <br />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Food Name</th>
+                <th>Food Type</th>
+                <th>Price(Rs/-)</th>
+            </tr>
+        </thead>
+        <tbody id="tabcontent"></tbody>
+    </table>
+</body>
+</html>

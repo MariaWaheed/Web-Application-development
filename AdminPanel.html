@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Side</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:50548/api/Foods",
+                dataType: 'json', // type of response data
+                success: function (data) {   // success callback function
+
+                    for (d in data) {
+                        $('#tabcontent').append("<tr>");
+                        $('#tabcontent').append("<td>" + data[d].ID + "</td><td>" + data[d].Name + "</td><td>" + data[d].Type + "</td><td>" + data[d].Price + "</td>");
+                        $('#tabcontent').append("</tr>");
+
+                    }
+                },
+                error: function (textStatus, errorMessage) { // error callback
+                    $('p').append('Error status: ' + JSON.stringify(textStatus) + 'Error Message : ' + errorMessage);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>
+        Admin Panel
+    </h2>
+    <div style="text-align:right;">
+        <a href="login.html" class="btn" role="button" style="background-color:darkviolet;color:white">Log out</a>&nbsp;&nbsp;<br /><br />
+        <a href="AdminOrderView.html" class="btn btn-info" role="button">View Orders</a>&nbsp;&nbsp;
+        <a href="Create Record.html" class="btn btn-info" role="button">Create Item</a>
+        &nbsp;&nbsp;<a href="Update Record.html" class="btn btn-info" role="button">Update Item</a>
+        <h4 style="text-align:left;color:black;">Food Menu:</h4>
+    </div>
+        <br />
+        <table class="table" style="text-align:center;">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Food Name</th>
+                    <th>Food Type</th>
+                    <th>Price(Rs/-)</th>
+                </tr>
+            </thead>
+            <tbody id="tabcontent"></tbody>
+        </table>
+</body>
+</html>
