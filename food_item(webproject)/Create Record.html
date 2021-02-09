@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <link rel="stylesheet" href="bootstrap.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:50548/api/Foods",
+            dataType: 'json', // type of response data
+            success: function (data) {   // success callback function
+
+                for (d in data) {
+                    $('#tabcontent').append("<tr>");
+                    $('#tabcontent').append("<td>" + data[d].ID + "</td><td>" + data[d].Name + "</td><td>" + data[d].Type + "</td><td>" + data[d].Price + "</td>");
+                    $('#tabcontent').append("</tr>");
+
+                }
+            },
+            error: function (textStatus, errorMessage) { // error callback 
+                $('p').append('Error status: ' + JSON.stringify(textStatus) + 'Error Message : ' + errorMessage);
+            }
+        });
+
+			$('#btnSubmit').click(function(){
+				var p = {
+						Name: $('#Name').val(),
+						Type:$('#Type').val(),
+						Price:$('#Price').val()
+					};
+				  $.ajax({
+                      url: "http://localhost:50548/api/Foods",
+					data: JSON.stringify(p),
+					type: "POST",
+					contentType: "application/json;charset=utf-8",
+					dataType: "json",
+                      success: function (data) {
+                          getrecord();
+					},
+					error: function (errormessage) {
+						alert("failed");
+					}
+				});
+			});
+    });
+    function getrecord() {
+        $("#tabcontent").html("");
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:50548/api/Foods",
+            dataType: 'json', // type of response data
+            success: function (data) {   // success callback function
+                for (d in data) {
+                    $("#tabcontent").append("<tr><td>" + data[d].ID + "</td><td>" + data[d].Name + "</td><td>" + data[d].Type + "</td><td>" + data[d].Price + "</td>" + "</tr>");
+                }
+            },
+            error: function (textStatus, errorMessage) { // error callback
+                $('p').append('Error status: ' + JSON.stringify(textStatus) + 'Error Message : ' + errorMessage);
+            }
+        });
+    }
+</script>
+</head>
+<body>
+    <br />
+    <a href="AdminPanel.html" class="btn btn-info" role="button" style="text-align:right;float:right;margin-right:20px;">Back</a>
+    <div class="row container">
+        <div class="col-lg-4">
+           <div class="form-group">
+                <label for="Name">Name:</label>
+                <input type="text" class="form-control" id="Name">
+            </div>
+            <div class="form-group">
+                <label for="CNIC">Type:</label>
+                <input type="text" class="form-control" id="Type">
+            </div>
+            <div class="form-group">
+                <label for="Age">Price:</label>
+                <input type="text" class="form-control" id="Price">
+            </div>
+            <button type="button" id="btnSubmit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="col-lg-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Food Name</th>
+                        <th>Food Type</th>
+                        <th>Price(Rs/-)</th>
+                    </tr>
+                </thead>
+                <tbody id="tabcontent"></tbody>
+            </table>
+        </div>
+    </div>
+    <br />
+    &nbsp;&nbsp;
+</body>
+</html>

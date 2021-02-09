@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="bootstrap.css">
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        
+        $(document).ready(function () {
+            var str = getParameterByName("value");
+            console.log(str);
+            var food = str.replace("-", " ");
+            $("#item").val(food);
+
+            $('#customerSubmit').click(function () {
+                var p = {
+                    CustomerName: $('#name').val(),
+                    Email: $('#email').val(),
+                    PhoneNo: $('#cell').val(),
+                    Address: $('#address').val(),
+                    Item: $('#item').val(),
+                };
+                $.ajax({
+                    url: "http://localhost:50548/api/Orders",
+                    data: JSON.stringify(p),
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        $('.alert success').show();
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body style="background-repeat:no-repeat;background-image: url('img/bodyBG.jpg'); background-size: cover;">
+    <div class="row">
+        <div class="col-lg-4" style="margin-left:550px;border:1px;margin-top:10px;border-bottom-color:gold">
+            <h2>Place Order</h2>
+            <form>
+                <fieldset>
+                    <div class="form-group">
+                        <label for="email" style="color:white">Item Name:</label>
+                        <input class="form-control" id="item" type="text" placeholder="Enter Item Name" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" style="color:white">Your Name:</label>
+                        <input class="form-control" type="text" id="name" placeholder="Enter Your Name" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" style="color:white">Email Address:</label>
+                        <input class="form-control" type="text" id="email" placeholder="Enter Email Address" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" style="color:white">Cell Number:</label>
+                        <input class="form-control" type="text" id="cell" placeholder="Enter Cell Number" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" style="color:white">Delivery Address:</label>
+                        <input class="form-control" type="text" id="address" placeholder="Enter Delivery Address" maxlength="20" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1" style="color:white;">Select Payment Option</label>
+                        <select name="payment option">
+                            <option value="credit">Credit Card</option>
+                            <option value="cp">Coupon</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                        <button type='button' class='btn btn-info' data-toggle='modal' data-target='#myModal' id="pay">Payment Details</button>
+                        <br /><span style="color:white;"><b>* </b>If you pay by cash then ignore payment details</span>
+                    </div>
+                    <center>
+                        <a href="confirm.html" class="btn btn-primary" type="submit" id="customerSubmit">Submit</a>
+                    </center>
+                </fieldset>
+            </form>
+
+        </div>
+    </div>
+    <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Payment Details</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div  class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><b>Card Holder Name</b></label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Card Holder Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1"><b>Credit Card Number</b></label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Credit Card Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1"><b>Pin</b></label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your pin code">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-success" data-dismiss="modal">Submit</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+</html>
